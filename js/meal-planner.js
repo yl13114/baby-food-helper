@@ -61,11 +61,17 @@ function addFood() {
     showToast('请输入食材名称', 'warning');
     return;
   }
-  if (currentFoods.includes(foodName)) {
+  var canon = nutritionDb ? resolveFoodCanonicalName(foodName, nutritionDb) : foodName;
+  if (!nutritionDb || !nutritionDb[canon]) {
+    canon = foodName;
+  } else if (canon !== foodName) {
+    showToast('已匹配词条：「' + foodName + '」→「' + canon + '」', 'info');
+  }
+  if (currentFoods.includes(canon)) {
     showToast('该食材已添加', 'warning');
     return;
   }
-  currentFoods.push(foodName);
+  currentFoods.push(canon);
   input.value = '';
   renderAddedFoods();
 }
@@ -245,10 +251,10 @@ async function checkFoods() {
     for (var j = i + 1; j < currentFoods.length; j++) {
       var food1 = currentFoods[i];
       var food2 = currentFoods[j];
+      var c1 = nutritionDb ? resolveFoodCanonicalName(food1, nutritionDb) : food1;
+      var c2 = nutritionDb ? resolveFoodCanonicalName(food2, nutritionDb) : food2;
       var relation = merged.find(function (r) {
-        return (
-          (r.food1 === food1 && r.food2 === food2) || (r.food1 === food2 && r.food2 === food1)
-        );
+        return (r.food1 === c1 && r.food2 === c2) || (r.food1 === c2 && r.food2 === c1);
       });
       if (!relation) continue;
       if (relation.type === 'conflict') conflicts.push({ food1: food1, food2: food2, effect: relation.effect });

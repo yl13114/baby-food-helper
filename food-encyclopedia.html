@@ -7,63 +7,90 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back-btn">← 返回首页</a>
+  <div class="app-container">
+    <header class="page-header">
+      <a href="index.html" class="back-btn">← 返回首页</a>
+      <h1 class="page-title">
+        <span class="emoji">📚</span>
+        食材百科
+      </h1>
+      <button class="nutrient-filter-btn" onclick="toggleNutrientPanel()" title="按营养需求筛选食材">
+        🧪
+      </button>
+    </header>
     
-    <h2 style="margin-bottom: 16px;">📚 食材百科</h2>
-    
-    <!-- 搜索框 -->
-    <div class="search-box">
-      <input type="text" class="form-control" id="searchInput" placeholder="搜索食材..." oninput="searchFood()">
-      <span class="search-icon">🔍</span>
-    </div>
-    
-    <!-- 食材详情 -->
-    <div id="foodDetail" style="display: none;">
-      <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-        <div style="font-size: 20px; font-weight: bold; margin-bottom: 8px;" id="foodName"></div>
-        <div style="color: var(--text-light); font-size: 14px; margin-bottom: 12px;" id="foodCategory"></div>
+    <main class="container">
+      <!-- 营养需求浮层 -->
+      <div class="nutrient-panel" id="nutrientPanel">
+        <div class="panel-header">
+          <span class="emoji">🧪</span>
+          想补充的微量元素（可多选）
+        </div>
+        <div id="nutrientChecks" class="nutrient-checks"></div>
+        <div class="panel-actions">
+          <button class="btn btn-primary" onclick="applyNutrientFilter()">筛选食材</button>
+          <button class="btn btn-secondary" onclick="clearNutrientFilter()">清空</button>
+        </div>
+        <div class="panel-close" onclick="toggleNutrientPanel()">收起 ↑</div>
+      </div>
+      
+      <!-- 营养筛选结果 -->
+      <div id="nutrientResults" class="nutrient-results"></div>
+      
+      <!-- 搜索框 -->
+      <div class="search-box">
+        <input type="text" class="form-control search-input" id="searchInput" 
+               placeholder="搜索食材或百科词条…" oninput="searchFood()">
+        <span class="search-icon">🔍</span>
+      </div>
+      
+      <!-- 食材详情 -->
+      <div id="foodDetail" class="food-detail-card">
+        <div class="detail-header">
+          <div id="baikeSourceBadge" class="baike-badge"></div>
+          <h2 id="foodName" class="food-name"></h2>
+          <div id="foodCategory" class="food-category"></div>
+          <div id="foodAliasesRow" class="food-aliases"></div>
+          <div id="baikeThumbWrap" class="baike-thumb"></div>
+        </div>
         
-        <!-- 营养价值 -->
-        <div style="font-weight: bold; margin-bottom: 8px;">营养价值</div>
-        <div id="foodNutrition" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;"></div>
+        <div class="detail-section">
+          <div class="section-title">营养价值</div>
+          <div id="foodNutrition" class="nutrition-tags"></div>
+        </div>
         
-        <!-- 建议添加月龄 -->
-        <div style="margin-bottom: 16px;">
-          <div style="font-weight: bold; margin-bottom: 8px;">建议添加月龄</div>
+        <div class="detail-section">
+          <div class="section-title">建议添加月龄</div>
           <div id="recommendedAge" class="badge badge-blue"></div>
         </div>
         
-        <!-- 当前年龄推荐提示 -->
-        <div id="ageRecommendation" style="margin-bottom: 16px;"></div>
+        <div id="ageRecommendation" class="age-recommendation"></div>
         
-        <!-- 风险提示 -->
-        <div style="margin-bottom: 16px;">
-          <div style="font-weight: bold; margin-bottom: 8px;">风险提示</div>
+        <div class="detail-section">
+          <div class="section-title">风险提示</div>
           <div id="foodRisk" class="tip-card tip-card-red"></div>
         </div>
         
-        <!-- 相生相克关系 -->
-        <div style="margin-bottom: 16px;">
-          <div style="font-weight: bold; margin-bottom: 8px;">相生相克关系</div>
+        <div class="detail-section">
+          <div class="section-title">相生相克关系</div>
           <div id="foodRelations"></div>
         </div>
         
-        <!-- 添加关系按钮 -->
         <button class="btn btn-primary btn-block" onclick="showAddRelationModal()">
           + 添加/修改关系
         </button>
       </div>
-    </div>
-    
-    <!-- 搜索结果 -->
-    <div id="searchResults"></div>
-    
-    <!-- 空状态 -->
-    <div id="emptyState" class="empty-state">
-      <div class="icon">🔍</div>
-      <div>搜索食材查看详情</div>
-    </div>
+      
+      <!-- 搜索结果 -->
+      <div id="searchResults" class="search-results"></div>
+      
+      <!-- 空状态 -->
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-text">搜索食材查看详情</div>
+        <div class="empty-hint">支持别名搜索，未收录自动联网加载百度百科</div>
+      </div>
+    </main>
   </div>
   
   <!-- 添加关系模态框 -->
@@ -73,20 +100,22 @@
         <h3>添加/修改关系</h3>
         <button class="modal-close" onclick="closeAddRelationModal()">×</button>
       </div>
-      <div class="form-group">
-        <label>关联食材名称</label>
-        <input type="text" class="form-control" id="relatedFoodName" placeholder="请输入食材名称">
-      </div>
-      <div class="form-group">
-        <label>关系类型</label>
-        <select class="form-control" id="relationType">
-          <option value="boost">相生（同食有好处）</option>
-          <option value="conflict">相克（同食有不良反应）</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>效果说明</label>
-        <textarea class="form-control" id="relationEffect" placeholder="请输入效果说明"></textarea>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>关联食材名称</label>
+          <input type="text" class="form-control" id="relatedFoodName" placeholder="请输入食材名称">
+        </div>
+        <div class="form-group">
+          <label>关系类型</label>
+          <select class="form-control" id="relationType">
+            <option value="boost">相生（同食有好处）</option>
+            <option value="conflict">相克（同食有不良反应）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>效果说明</label>
+          <textarea class="form-control" id="relationEffect" placeholder="请输入效果说明"></textarea>
+        </div>
       </div>
       <button class="btn btn-primary btn-block" onclick="saveRelation()">保存</button>
     </div>

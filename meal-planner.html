@@ -7,56 +7,63 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back-btn">← 返回首页</a>
+  <div class="app-container">
+    <header class="subpage-header">
+      <a href="index.html" class="back-btn">← 返回首页</a>
+      <h1 class="page-title">📝 辅食计划</h1>
+    </header>
     
-    <h2 style="margin-bottom: 16px;">📝 辅食计划</h2>
-    
-    <!-- 日期选择 -->
-    <div class="form-group">
-      <label>选择日期</label>
-      <input type="date" class="form-control" id="planDate" onchange="loadPlan()">
-    </div>
-    
-    <!-- 添加食材 -->
-    <div class="form-group">
-      <label>添加食材</label>
-      <div style="display: flex; gap: 8px;">
-        <input type="text" class="form-control" id="foodInput" placeholder="输入食材名称" onkeypress="if(event.key==='Enter') addFood()">
-        <button class="btn btn-primary" style="white-space: nowrap;" onclick="addFood()">添加</button>
-      </div>
-    </div>
-    
-    <!-- 已添加食材 -->
-    <div id="addedFoods" style="margin-bottom: 16px;"></div>
-    
-    <!-- 推荐食材按钮 -->
-    <button class="btn btn-orange btn-block" style="margin-bottom: 16px;" onclick="showRecommendedFoods()">
-      🎯 推荐适合当前年龄的食材
-    </button>
-    
-    <!-- 推荐食材区域 -->
-    <div id="recommendedArea" style="display: none; margin-bottom: 16px;">
-      <div style="font-weight: bold; margin-bottom: 8px;">推荐食材（已排除已尝试的）：</div>
-      <div id="recommendedFoods"></div>
-    </div>
-    
-    <!-- 检测按钮 -->
-    <button class="btn btn-green btn-block" style="margin-bottom: 16px;" onclick="checkFoods()">
-      🔍 检测相生相克
-    </button>
-    
-    <!-- 检测结果 -->
-    <div id="checkResult"></div>
-    
-    <!-- 保存按钮 -->
-    <button class="btn btn-blue btn-block" onclick="savePlan()">💾 保存计划</button>
-    
-    <!-- 历史记录 -->
-    <div style="margin-top: 30px;">
-      <h3 style="margin-bottom: 12px;">历史记录</h3>
-      <div id="historyList"></div>
-    </div>
+    <main class="container">
+      <section class="card-section">
+        <div class="form-group">
+          <label for="planDate">选择日期</label>
+          <input type="date" class="form-control" id="planDate" onchange="loadPlan()">
+        </div>
+        
+        <div class="form-group">
+          <label for="foodInput">添加食材</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="foodInput" placeholder="输入食材名称" onkeypress="if(event.key==='Enter') addFood()">
+            <button class="btn btn-primary" onclick="addFood()">添加</button>
+          </div>
+        </div>
+      </section>
+      
+      <section class="card-section">
+        <h3 class="section-title">已添加食材</h3>
+        <div id="addedFoods" class="food-tags"></div>
+      </section>
+      
+      <section class="card-section">
+        <button class="btn btn-warning btn-block" onclick="showRecommendedFoods()">
+          🎯 推荐适合当前年龄的食材
+        </button>
+      </section>
+      
+      <section id="recommendedArea" class="card-section" style="display: none;">
+        <h3 class="section-title">推荐食材（已排除已尝试的）</h3>
+        <div id="recommendedFoods" class="food-grid"></div>
+      </section>
+      
+      <section class="card-section">
+        <button class="btn btn-success btn-block" onclick="checkFoods()">
+          🔍 检测相生相克
+        </button>
+      </section>
+      
+      <section class="card-section">
+        <div id="checkResult"></div>
+      </section>
+      
+      <section class="card-section">
+        <button class="btn btn-info btn-block" onclick="savePlan()">💾 保存计划</button>
+      </section>
+      
+      <section class="card-section">
+        <h3 class="section-title">历史记录</h3>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </main>
   </div>
   
   <script src="js/app.js"></script>

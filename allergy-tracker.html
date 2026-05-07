@@ -7,49 +7,52 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back-btn">← 返回首页</a>
+  <div class="app-container">
+    <header class="page-header">
+      <a href="index.html" class="back-btn">← 返回首页</a>
+      <h2 class="page-title">🍎 排敏进度</h2>
+    </header>
     
-    <h2 style="margin-bottom: 16px;">🍎 排敏进度</h2>
-    
-    <!-- 统计区域 -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="number" style="color: var(--green);" id="organicCount">0</div>
-        <div class="label">🟢 有机已吃</div>
+    <main class="container">
+      <!-- 统计区域 -->
+      <div class="stats-grid">
+        <div class="stat-card stat-green">
+          <div class="stat-number" id="organicCount">0</div>
+          <div class="stat-label">🟢 有机已吃</div>
+        </div>
+        <div class="stat-card stat-blue">
+          <div class="stat-number" id="normalCount">0</div>
+          <div class="stat-label">🔵 普通已吃</div>
+        </div>
+        <div class="stat-card stat-gray">
+          <div class="stat-number" id="noneCount">0</div>
+          <div class="stat-label">⚪ 未吃过</div>
+        </div>
+        <div class="stat-card stat-orange">
+          <div class="stat-number" id="plannedCount">0</div>
+          <div class="stat-label">🟠 计划添加</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="number" style="color: var(--blue);" id="normalCount">0</div>
-        <div class="label">🔵 普通已吃</div>
+      
+      <!-- 进度条 -->
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">已尝试食材</span>
+          <span class="progress-label" id="progressText">0 / 0 种</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="number" style="color: var(--gray);" id="noneCount">0</div>
-        <div class="label">⚪ 未吃过</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" style="color: var(--orange);" id="plannedCount">0</div>
-        <div class="label">🟠 计划添加</div>
-      </div>
-    </div>
-    
-    <!-- 进度条 -->
-    <div style="margin-bottom: 20px;">
-      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
-        <span>已尝试</span>
-        <span id="progressText">0 / 0 种食材</span>
-      </div>
-      <div class="progress-bar">
-        <div class="fill" id="progressFill" style="width: 0%;"></div>
-      </div>
-    </div>
-    
-    <!-- 食材列表区域 -->
-    <div id="foodCategories"></div>
-    
-    <!-- 添加新食材按钮 -->
-    <button class="btn btn-primary btn-block" style="margin-top: 20px;" onclick="showAddFoodModal()">
-      + 添加新食材
-    </button>
+      
+      <!-- 食材列表区域 -->
+      <div id="foodCategories"></div>
+      
+      <!-- 添加新食材按钮 -->
+      <button class="btn btn-primary btn-block" onclick="showAddFoodModal()">
+        <span class="btn-icon">+</span> 添加新食材
+      </button>
+    </main>
   </div>
   
   <!-- 帮助按钮 -->
@@ -57,7 +60,7 @@
   
   <!-- 提示弹出框 -->
   <div class="tooltip" id="tooltip">
-    <div style="font-weight: bold; margin-bottom: 12px;">颜色含义说明</div>
+    <div class="tooltip-header">🎨 颜色含义说明</div>
     <div class="tooltip-item">
       <div class="tooltip-color" style="background: var(--green);"></div>
       <span>🟢 绿色：有机已吃</span>
@@ -74,35 +77,35 @@
       <div class="tooltip-color" style="background: var(--orange);"></div>
       <span>🟠 橙色：计划添加</span>
     </div>
-    <div style="font-size: 12px; color: var(--text-light); margin-top: 12px;">
-      点击食材按钮可循环切换状态
-    </div>
+    <div class="tooltip-tip">点击食材按钮可循环切换状态</div>
   </div>
   
   <!-- 添加食材模态框 -->
   <div class="modal" id="addFoodModal">
-    <div class="modal-content" style="width: 90%; max-width: 350px;">
+    <div class="modal-content">
       <div class="modal-header">
-        <h3>添加新食材</h3>
+        <h3 class="modal-title">添加新食材</h3>
         <button class="modal-close" onclick="closeAddFoodModal()">×</button>
       </div>
-      <div class="form-group">
-        <label>食材名称</label>
-        <input type="text" class="form-control" id="newFoodName" placeholder="请输入食材名称">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">食材名称</label>
+          <input type="text" class="form-control" id="newFoodName" placeholder="请输入食材名称">
+        </div>
+        <div class="form-group">
+          <label class="form-label">分类</label>
+          <select class="form-control" id="newFoodCategory">
+            <option value="vegetables">蔬菜类</option>
+            <option value="fruits">水果类</option>
+            <option value="meats">肉类</option>
+            <option value="grains">谷物类</option>
+            <option value="dairy">蛋奶类</option>
+            <option value="beans">豆类</option>
+            <option value="nuts">坚果类</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>分类</label>
-        <select class="form-control" id="newFoodCategory">
-          <option value="vegetables">蔬菜类</option>
-          <option value="fruits">水果类</option>
-          <option value="meats">肉类</option>
-          <option value="grains">谷物类</option>
-          <option value="dairy">蛋奶类</option>
-          <option value="beans">豆类</option>
-          <option value="nuts">坚果类</option>
-        </select>
-      </div>
-      <button class="btn btn-primary btn-block" onclick="addNewFood()">添加</button>
+      <button class="btn btn-primary btn-block" onclick="addNewFood()">确认添加</button>
     </div>
   </div>
   

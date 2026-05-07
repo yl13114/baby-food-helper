@@ -140,3 +140,90 @@ function mergeFoodRelations(baseList, userList) {
     return map[k];
   });
 }
+
+/**
+ * 食材条目是否命中搜索关键字（本名或别名；单字只匹配本名/别名相等或本名子串）。
+ */
+function foodMatchesSearchKeyword(entry, keyword) {
+  keyword = String(keyword || '').trim();
+  if (!keyword) return false;
+  if (!entry || typeof entry !== 'object') return false;
+  var nm = entry.name != null ? String(entry.name) : '';
+  if (nm.indexOf(keyword) >= 0) return true;
+  var als = Array.isArray(entry.aliases) ? entry.aliases : [];
+  for (var i = 0; i < als.length; i++) {
+    var a = String(als[i] || '');
+    if (!a) continue;
+    if (a === keyword) return true;
+    if (keyword.length >= 2) {
+      if (a.indexOf(keyword) >= 0) return true;
+      if (keyword.indexOf(a) >= 0 && a.length >= 2) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * 将输入名归一为离线库里主词条名（搭配检测用）。多义项同时命中则退回原输入。
+ */
+function resolveFoodCanonicalName(inputName, nutritionDb) {
+  var raw = String(inputName || '').trim();
+  if (!raw || !nutritionDb || typeof nutritionDb !== 'object') return raw;
+
+  if (nutritionDb[raw]) return raw;
+
+  var exact = [];
+  var k;
+  for (k in nutritionDb) {
+    if (!Object.prototype.hasOwnProperty.call(nutritionDb, k)) continue;
+    var e = nutritionDb[k];
+    if (!e) continue;
+    if (String(e.name != null ? e.name : '') === raw) exact.push(k);
+    var als = Array.isArray(e.aliases) ? e.aliases : [];
+    for (var i = 0; i < als.length; i++) {
+      if (als[i] === raw) exact.push(k);
+    }
+  }
+
+  exact = exact.filter(function (v, ix, arr) {
+    return arr.indexOf(v) === ix;
+  });
+  if (exact.length === 1) return exact[0];
+
+  if (raw.length >= 2) {
+    var nameHits = [];
+    for (k in nutritionDb) {
+      if (!Object.prototype.hasOwnProperty.call(nutritionDb, k)) continue;
+      var en = nutritionDb[k];
+      if (!en) continue;
+      var n = String(en.name != null ? en.name : k);
+      if (n.indexOf(raw) >= 0) nameHits.push(k);
+    }
+    nameHits = nameHits.filter(function (v, ix, arr) {
+      return arr.indexOf(v) === ix;
+    });
+    if (nameHits.length === 1) return nameHits[0];
+
+    var aliasHits = [];
+    for (k in nutritionDb) {
+      if (!Object.prototype.hasOwnProperty.call(nutritionDb, k)) continue;
+      var e2 = nutritionDb[k];
+      if (!e2) continue;
+      var als2 = Array.isArray(e2.aliases) ? e2.aliases : [];
+      for (var j = 0; j < als2.length; j++) {
+        var ax = String(als2[j] || '');
+        if (!ax || ax === raw) continue;
+        if (ax.indexOf(raw) >= 0 || (raw.indexOf(ax) >= 0 && ax.length >= 2)) {
+          aliasHits.push(k);
+          break;
+        }
+      }
+    }
+    aliasHits = aliasHits.filter(function (v, ix, arr) {
+      return arr.indexOf(v) === ix;
+    });
+    if (aliasHits.length === 1) return aliasHits[0];
+  }
+
+  return raw;
+}

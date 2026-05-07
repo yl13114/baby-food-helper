@@ -1,5 +1,8 @@
 // Service Worker for PWA offline support
-const CACHE_NAME = 'baby-food-helper-v1';
+// HTML/CSS 使用「网络优先」，避免出现「旧 CSS + 新 HTML」导致同页刷新前后样式不一致
+
+const CACHE_NAME = 'baby-food-helper-v6';
+
 const urlsToCache = [
   './',
   './index.html',
@@ -20,48 +23,82 @@ const urlsToCache = [
   './data/food-nutrition.json'
 ];
 
-// 安装时缓存资源
-self.addEventListener('install', event => {
+function shouldNetworkFirst(request) {
+  if (request.mode === 'navigate') return true;
+  const dest = request.destination;
+  if (dest === 'document' || dest === 'style') return true;
+  try {
+    const pathname = new URL(request.url).pathname;
+    if (pathname.endsWith('.html')) return true;
+    if (pathname.endsWith('.css')) return true;
+  } catch (e) {
+    /* ignore */
+  }
+  return false;
+}
+
+function cachePut(request, response) {
+  if (!response || response.status !== 200 || response.type !== 'basic') return;
+  const copy = response.clone();
+  caches.open(CACHE_NAME).then(function (cache) {
+    cache.put(request, copy);
+  });
+}
+
+function networkFirst(request) {
+  return fetch(request)
+    .then(function (response) {
+      cachePut(request, response);
+      return response;
+    })
+    .catch(function () {
+      return caches.match(request).then(function (cached) {
+        if (cached) return cached;
+        return new Response('Offline', { status: 503, statusText: 'Offline' });
+      });
+    });
+}
+
+function cacheFirst(request) {
+  return caches.match(request).then(function (cached) {
+    if (cached) return cached;
+    return fetch(request).then(function (response) {
+      cachePut(request, response);
+      return response;
+    });
+  });
+}
+
+self.addEventListener('install', function (event) {
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      console.log('Opened cache');
+    caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// 拦截请求，优先使用缓存
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', function (event) {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) {
-        return response;
-      }
-      return fetch(event.request).then(response => {
-        // 动态缓存新请求
-        if (response && response.status === 200 && response.type === 'basic') {
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return response;
-      });
-    })
+    shouldNetworkFirst(event.request)
+      ? networkFirst(event.request)
+      : cacheFirst(event.request)
   );
 });
 
-// 激活时清理旧缓存
-self.addEventListener('activate', event => {
+self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      caches.keys().then(function (cacheNames) {
+        return Promise.all(
+          cacheNames.map(function (cacheName) {
+            if (cacheName !== CACHE_NAME) return caches.delete(cacheName);
+          })
+        );
+      }),
+      self.clients.claim()
+    ])
   );
 });

@@ -7,49 +7,48 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back-btn">← 返回首页</a>
+  <div class="app-container">
+    <header class="page-header">
+      <a href="index.html" class="back-btn">← 返回首页</a>
+      <h2 class="page-title">📈 成长记录</h2>
+    </header>
     
-    <h2 style="margin-bottom: 16px;">📈 成长记录</h2>
-    
-    <!-- 当前年龄显示 -->
-    <div class="alert alert-info" id="ageInfo">
-      当前年龄加载中...
-    </div>
-    
-    <!-- 添加记录表单 -->
-    <div class="list-item" style="flex-direction: column; align-items: flex-start;">
-      <div style="font-weight: bold; margin-bottom: 12px;">添加新记录</div>
+    <main class="container">
+      <div class="alert alert-info" id="ageInfo">当前年龄加载中...</div>
       
-      <div class="form-group">
-        <label>日期</label>
-        <input type="date" class="form-control" id="recordDate">
-      </div>
+      <section class="section-card">
+        <h3 class="section-title">添加新记录</h3>
+        <form class="form-section" onsubmit="addRecord(); return false;">
+          <div class="form-group">
+            <label class="form-label">日期</label>
+            <input type="date" class="form-control" id="recordDate">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">身高 (cm)</label>
+              <input type="number" class="form-control" id="height" placeholder="如：75.5" step="0.1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">体重 (kg)</label>
+              <input type="number" class="form-control" id="weight" placeholder="如：9.5" step="0.1">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">头围 (cm，可选)</label>
+            <input type="number" class="form-control" id="headCircumference" placeholder="如：45.0" step="0.1">
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">💾 保存记录</button>
+        </form>
+      </section>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="form-group">
-          <label>身高 (cm)</label>
-          <input type="number" class="form-control" id="height" placeholder="如：75.5" step="0.1">
-        </div>
-        <div class="form-group">
-          <label>体重 (kg)</label>
-          <input type="number" class="form-control" id="weight" placeholder="如：9.5" step="0.1">
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <label>头围 (cm，可选)</label>
-        <input type="number" class="form-control" id="headCircumference" placeholder="如：45.0" step="0.1">
-      </div>
-      
-      <button class="btn btn-primary btn-block" onclick="addRecord()">💾 保存记录</button>
-    </div>
-    
-    <!-- 历史记录 -->
-    <div style="margin-top: 30px;">
-      <h3 style="margin-bottom: 12px;">历史记录</h3>
-      <div id="recordList"></div>
-    </div>
+      <section class="section-card">
+        <h3 class="section-title">历史记录</h3>
+        <div id="recordList"></div>
+      </section>
+    </main>
   </div>
   
   <script src="js/app.js"></script>
