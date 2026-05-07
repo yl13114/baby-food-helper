@@ -4,8 +4,15 @@
  */
 
 let foodDatabase = {};
+/** @type {Promise<void>|null} 页面打开后 fetch 离线库完成前不要搜索，否则会误判「无数据」 */
+let foodDatabaseReadyPromise = null;
 let searchDebounceTimer = null;
 let baikeLookupAbort = null;
+
+/** 任意依赖 foodDatabase 的逻辑前先等待离线库拉取完成 */
+async function awaitFoodDatabase() {
+  if (foodDatabaseReadyPromise) await foodDatabaseReadyPromise;
+}
 
 function escapeHtmlFood(s) {
   return String(s)
@@ -18,9 +25,11 @@ function escapeAttrSingle(s) {
   return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-  await loadFoodDatabase();
-  initNutrientChecks();
+document.addEventListener('DOMContentLoaded', function () {
+  foodDatabaseReadyPromise = loadFoodDatabase().then(function () {
+    initNutrientChecks();
+    syncSearchAfterDbReady();
+  });
 });
 
 async function loadFoodDatabase() {
@@ -30,7 +39,15 @@ async function loadFoodDatabase() {
   } catch (e) {
     console.error('加载食材数据失败:', e);
     showToast('加载食材数据失败', 'error');
+    foodDatabase = {};
   }
+}
+
+/** 离线库就绪后，若输入框已有内容则自动再搜一次（避免用户抢先输入只看到空结果） */
+function syncSearchAfterDbReady() {
+  const input = document.getElementById('searchInput');
+  if (!input || !String(input.value || '').trim()) return;
+  void executeSearchFood();
 }
 
 function searchFood() {
@@ -182,6 +199,8 @@ function buildBaiduPrimaryLink(data, searchKeyword) {
 }
 
 async function executeSearchFood() {
+  await awaitFoodDatabase();
+
   const keyword = document.getElementById('searchInput').value.trim();
 
   if (baikeLookupAbort) {
@@ -603,7 +622,9 @@ function getCheckedNutrients() {
   return Array.from(box.querySelectorAll('input[type=checkbox]:checked')).map((el) => el.value);
 }
 
-function applyNutrientFilter() {
+async function applyNutrientFilter() {
+  await awaitFoodDatabase();
+
   const need = getCheckedNutrients();
   const resultDiv = document.getElementById('nutrientResults');
   if (!resultDiv) return;

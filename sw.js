@@ -1,7 +1,7 @@
 // Service Worker for PWA offline support
 // HTML/CSS 使用「网络优先」，避免出现「旧 CSS + 新 HTML」导致同页刷新前后样式不一致
 
-const CACHE_NAME = 'baby-food-helper-v6';
+const CACHE_NAME = 'baby-food-helper-v7';
 
 const urlsToCache = [
   './',
