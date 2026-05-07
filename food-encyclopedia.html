@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>食材百科 - 宝宝辅食助手</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-btn">← 返回首页</a>
+    
+    <h2 style="margin-bottom: 16px;">📚 食材百科</h2>
+    
+    <!-- 搜索框 -->
+    <div class="search-box">
+      <input type="text" class="form-control" id="searchInput" placeholder="搜索食材..." oninput="searchFood()">
+      <span class="search-icon">🔍</span>
+    </div>
+    
+    <!-- 食材详情 -->
+    <div id="foodDetail" style="display: none;">
+      <div class="list-item" style="flex-direction: column; align-items: flex-start;">
+        <div style="font-size: 20px; font-weight: bold; margin-bottom: 8px;" id="foodName"></div>
+        <div style="color: var(--text-light); font-size: 14px; margin-bottom: 12px;" id="foodCategory"></div>
+        
+        <!-- 营养价值 -->
+        <div style="font-weight: bold; margin-bottom: 8px;">营养价值</div>
+        <div id="foodNutrition" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;"></div>
+        
+        <!-- 建议添加月龄 -->
+        <div style="margin-bottom: 16px;">
+          <div style="font-weight: bold; margin-bottom: 8px;">建议添加月龄</div>
+          <div id="recommendedAge" class="badge badge-blue"></div>
+        </div>
+        
+        <!-- 当前年龄推荐提示 -->
+        <div id="ageRecommendation" style="margin-bottom: 16px;"></div>
+        
+        <!-- 风险提示 -->
+        <div style="margin-bottom: 16px;">
+          <div style="font-weight: bold; margin-bottom: 8px;">风险提示</div>
+          <div id="foodRisk" class="tip-card tip-card-red"></div>
+        </div>
+        
+        <!-- 相生相克关系 -->
+        <div style="margin-bottom: 16px;">
+          <div style="font-weight: bold; margin-bottom: 8px;">相生相克关系</div>
+          <div id="foodRelations"></div>
+        </div>
+        
+        <!-- 添加关系按钮 -->
+        <button class="btn btn-primary btn-block" onclick="showAddRelationModal()">
+          + 添加/修改关系
+        </button>
+      </div>
+    </div>
+    
+    <!-- 搜索结果 -->
+    <div id="searchResults"></div>
+    
+    <!-- 空状态 -->
+    <div id="emptyState" class="empty-state">
+      <div class="icon">🔍</div>
+      <div>搜索食材查看详情</div>
+    </div>
+  </div>
+  
+  <!-- 添加关系模态框 -->
+  <div class="modal" id="addRelationModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>添加/修改关系</h3>
+        <button class="modal-close" onclick="closeAddRelationModal()">×</button>
+      </div>
+      <div class="form-group">
+        <label>关联食材名称</label>
+        <input type="text" class="form-control" id="relatedFoodName" placeholder="请输入食材名称">
+      </div>
+      <div class="form-group">
+        <label>关系类型</label>
+        <select class="form-control" id="relationType">
+          <option value="boost">相生（同食有好处）</option>
+          <option value="conflict">相克（同食有不良反应）</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>效果说明</label>
+        <textarea class="form-control" id="relationEffect" placeholder="请输入效果说明"></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="saveRelation()">保存</button>
+    </div>
+  </div>
+  
+  <script src="js/app.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/encyclopedia.js"></script>
+</body>
+</html>

@@ -1,0 +1,608 @@
+/* 全局样式 - 宝宝辅食助手 PWA */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #FF8C42;
+  --primary-light: #FFB07A;
+  --green: #4CAF50;
+  --blue: #2196F3;
+  --orange: #FF9800;
+  --gray: #9E9E9E;
+  --red: #F44336;
+  --yellow: #FFC107;
+  --bg: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #E0E0E0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+
+/* 容器 */
+.container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 标题 */
+.header {
+  text-align: center;
+  padding: 20px 0;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  margin: -16px -16px 20px -16px;
+  padding: 30px 16px;
+  border-radius: 0 0 20px 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.header .age-display {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.header .date-display {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* 功能卡片网格 */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card-icon {
+  font-size: 32px;
+  width: 50px;
+  text-align: center;
+}
+
+.card-content h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.card-content p {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* 按钮 */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn:active {
+  opacity: 0.8;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-green {
+  background: var(--green);
+  color: white;
+}
+
+.btn-blue {
+  background: var(--blue);
+  color: white;
+}
+
+.btn-orange {
+  background: var(--orange);
+  color: white;
+}
+
+.btn-red {
+  background: var(--red);
+  color: white;
+}
+
+.btn-gray {
+  background: var(--gray);
+  color: white;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* 表单元素 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+}
+
+textarea.form-control {
+  min-height: 80px;
+  resize: vertical;
+}
+
+select.form-control {
+  appearance: none;
+  background: white url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%23333' d='M6 9L1 4h10z'/></svg>") no-repeat right 12px center;
+  padding-right: 36px;
+}
+
+/* 标签 */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-green {
+  background: #E8F5E9;
+  color: var(--green);
+}
+
+.badge-red {
+  background: #FFEBEE;
+  color: var(--red);
+}
+
+.badge-yellow {
+  background: #FFF8E1;
+  color: #F57F17;
+}
+
+.badge-blue {
+  background: #E3F2FD;
+  color: var(--blue);
+}
+
+.badge-orange {
+  background: #FFF3E0;
+  color: var(--orange);
+}
+
+.badge-gray {
+  background: #F5F5F5;
+  color: var(--gray);
+}
+
+/* 列表 */
+.list {
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.list-item {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* 食材状态按钮 */
+.food-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  min-width: 80px;
+}
+
+.food-btn:active {
+  transform: scale(0.95);
+}
+
+.food-btn.none {
+  border-color: var(--gray);
+  color: var(--gray);
+  background: white;
+}
+
+.food-btn.organic {
+  border-color: var(--green);
+  color: white;
+  background: var(--green);
+}
+
+.food-btn.normal {
+  border-color: var(--blue);
+  color: white;
+  background: var(--blue);
+}
+
+.food-btn.planned {
+  border-color: var(--orange);
+  color: white;
+  background: var(--orange);
+}
+
+/* 分类标题 */
+.category-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0 12px 0;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 网格布局 */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* 提示卡片 */
+.tip-card {
+  background: #FFF8E1;
+  border-left: 4px solid var(--yellow);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.tip-card-green {
+  background: #E8F5E9;
+  border-left-color: var(--green);
+}
+
+.tip-card-red {
+  background: #FFEBEE;
+  border-left-color: var(--red);
+}
+
+.tip-card-blue {
+  background: #E3F2FD;
+  border-left-color: var(--blue);
+}
+
+/* 警告/成功消息 */
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.alert-success {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+
+.alert-warning {
+  background: #FFF8E1;
+  color: #F57F17;
+  border: 1px solid #FFD54F;
+}
+
+.alert-error {
+  background: #FFEBEE;
+  color: #C62828;
+  border: 1px solid #EF9A9A;
+}
+
+.alert-info {
+  background: #E3F2FD;
+  color: #1565C0;
+  border: 1px solid #90CAF9;
+}
+
+/* 模态框 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-light);
+}
+
+/* 返回按钮 */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* 帮助按钮 */
+.help-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255,140,66,0.4);
+  z-index: 100;
+}
+
+/* 提示弹出框 */
+.tooltip {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  z-index: 101;
+  max-width: 280px;
+}
+
+.tooltip.show {
+  display: block;
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.tooltip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tooltip-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+/* 统计卡片 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-card .number {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* 进度条 */
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.progress-bar .fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.3s;
+}
+
+/* 搜索框 */
+.search-box {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-box input {
+  padding-right: 40px;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+}
+
+/* 标签组 */
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin: 4px;
+  border: 1px solid var(--border);
+}
+
+.tag-green {
+  background: #E8F5E9;
+  color: var(--green);
+  border-color: #A5D6A7;
+}
+
+.tag-red {
+  background: #FFEBEE;
+  color: var(--red);
+  border-color: #EF9A9A;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-light);
+}
+
+.empty-state .icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+/* 历史记录 */
+.history-item {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.history-date {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.history-foods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 响应式 */
+@media (min-width: 768px) {
+  .container {
+    max-width: 500px;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "宝宝辅食助手",
+  "short_name": "辅食助手",
+  "description": "宝宝辅食计划与食材相克查询工具",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF8C42",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍎</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

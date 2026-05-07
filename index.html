@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>宝宝辅食助手</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="header">
+    <h1>🍎 宝宝辅食助手</h1>
+    <div class="age-display" id="ageDisplay">计算中...</div>
+    <div class="date-display" id="dateDisplay"></div>
+  </div>
+  
+  <div class="container">
+    <div class="card-grid">
+      <a href="meal-planner.html" class="card">
+        <div class="card-icon">📝</div>
+        <div class="card-content">
+          <h3>辅食计划</h3>
+          <p>每日食材安排与相克检测</p>
+        </div>
+      </a>
+      
+      <a href="food-encyclopedia.html" class="card">
+        <div class="card-icon">📚</div>
+        <div class="card-content">
+          <h3>食材百科</h3>
+          <p>营养价值与相生相克查询</p>
+        </div>
+      </a>
+      
+      <a href="feeding-schedule.html" class="card">
+        <div class="card-icon">📅</div>
+        <div class="card-content">
+          <h3>辅食时间表</h3>
+          <p>按月龄查看推荐辅食</p>
+        </div>
+      </a>
+      
+      <a href="growth-tracker.html" class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-content">
+          <h3>成长记录</h3>
+          <p>记录宝宝发育数据</p>
+        </div>
+      </a>
+      
+      <a href="allergy-tracker.html" class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-content">
+          <h3>排敏进度</h3>
+          <p>记录已尝试的食材状态</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function (err) {
+        console.log('SW registration failed:', err);
+      });
+    }
+  </script>
+</body>
+</html>
